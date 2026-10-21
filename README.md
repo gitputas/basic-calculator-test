@@ -1,41 +1,47 @@
-# Test Logic เครื่องคิดเลข (Basic Calculator)
+# Basic Calculator Test
 
-เว็บที่ทดสอบ: https://testsheepnz.github.io/BasicCalculator.html
-เครื่องมือ: Playwright + JavaScript (Page Object Model, Data-driven)
+Automated tests for the [Basic Calculator](https://testsheepnz.github.io/BasicCalculator.html), written with Playwright and JavaScript using a Page Object and a data-driven test.
 
-## วิธีรัน
+## Run
 
 ```bash
 npm install
 npx playwright install chromium
-npm run test:prototype   # รันกับ Prototype
-npm test                 # รันชุดเดิมกับ Prototype + Build 1–9
-npm run report           # เปิด report ผลการรัน
+npm run test:prototype   # Prototype only
+npm test                 # Prototype and Build 1–9
+npm run report           # open the HTML report
 ```
 
-## ไฟล์ที่ส่ง
+## Deliverables
 
-| สิ่งที่ต้องส่ง | ไฟล์ |
+| Deliverable | Location |
 |---|---|
-| ตาราง test case (ส่วนที่ 1) | [`docs/TEST-CASES.xlsx`](docs/TEST-CASES.xlsx) (ข้อมูลเดียวกับ [`test-data/test-cases.json`](test-data/test-cases.json) ที่ test อ่าน) |
-| Source code | repo นี้ |
-| Report ผลการรัน | เปิดดูออนไลน์: https://gitputas.github.io/basic-calculator-test/playwright-report/ (ไฟล์อยู่ที่ `playwright-report/index.html`) |
-| ตารางสรุปบั๊ก (ส่วนที่ 3) | [`docs/BUG-REPORT.md`](docs/BUG-REPORT.md), [`docs/BUG-REPORT.xlsx`](docs/BUG-REPORT.xlsx) |
+| Test case table (Part 1) | [`docs/TEST-CASES.xlsx`](docs/TEST-CASES.xlsx), same data as [`test-data/test-cases.json`](test-data/test-cases.json) |
+| Source code (Part 2) | this repository |
+| Test report | https://gitputas.github.io/basic-calculator-test/playwright-report/ (file: `playwright-report/index.html`) |
+| Bug report (Part 3) | [`docs/BUG-REPORT.md`](docs/BUG-REPORT.md), [`docs/BUG-REPORT.xlsx`](docs/BUG-REPORT.xlsx) |
 
-## โครงสร้าง
+## Structure
 
 ```
-test-data/test-cases.json   ตาราง test case (คอลัมน์เดียวกับส่วนที่ 1)
-pages/CalculatorPage.js     Page Object: locator + action
-tests/calculator.spec.js    test ชุดเดียว วนทุกแถวในตาราง
-playwright.config.js        build เป็น parameter: 1 project ต่อ 1 build
+test-data/test-cases.json   test case table, same columns as Part 1
+pages/CalculatorPage.js     Page Object: locators and actions
+tests/calculator.spec.js    one test that runs every row of the table
+playwright.config.js        one project per build (Prototype, 1–9)
 ```
 
-- Expected result มาจาก `test-cases.json` เท่านั้น ไม่ได้อ่านจากหน้าเว็บมาเทียบ
-- ไม่มี hard wait: ใช้การรออัตโนมัติของ `expect()` และ `click()`
-- Operation `Add + Clear` = คำนวณ Add แล้วกด Clear, Operation `Clear` = กด Clear อย่างเดียว
-- Expected result ที่ขึ้นต้นด้วย `Error:` = ต้องแสดงข้อความ error นั้น
+## How it works
 
-## การใช้ AI
+- Every row in `test-cases.json` becomes a test, and every build runs the same test as its own project.
+- Expected results come from the table. Nothing is read back from the page to build an expectation.
+- No hard waits. Playwright's `expect()` and `click()` wait for the page on their own.
+- `Add + Clear` in the Operation column means calculate with Add, then click Clear. `Clear` alone means click Clear only.
+- An expected result starting with `Error:` means the page must show that error message.
 
-ใช้ Claude Code (AI) สร้างโค้ด ตาราง test case และร่างรายงานบั๊ก ผู้ส่งเป็นคนกำหนดโจทย์ สั่งให้แก้ และตรวจผลการรัน
+## Results
+
+Prototype passes all 44 test cases. Build 1–9 each fail at least one, and the bugs are listed in [`docs/BUG-REPORT.md`](docs/BUG-REPORT.md).
+
+## AI use
+
+Code, test cases and the bug report draft were produced with Claude Code; I set the requirements, reviewed the runs and directed the changes.

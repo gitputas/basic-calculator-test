@@ -1,7 +1,6 @@
-// @ts-check
 const { defineConfig, devices } = require('@playwright/test');
 
-// build เป็น parameter: 1 project ต่อ 1 build ใช้ test ชุดเดียวกัน
+// The build is a parameter: one project per build, all running the same test.
 const builds = ['Prototype', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 module.exports = defineConfig({
@@ -13,7 +12,7 @@ module.exports = defineConfig({
 
   use: {
     baseURL: 'https://testsheepnz.github.io',
-    // build ที่ element หายไป (เช่น Build 9) จะ fail ใน 3 วินาที ไม่ต้องรอ timeout เต็ม
+    // A missing element (as in Build 9) fails after 3 seconds instead of waiting for the full test timeout.
     actionTimeout: 3_000,
     screenshot: 'only-on-failure',
   },

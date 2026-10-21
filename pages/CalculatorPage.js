@@ -1,11 +1,5 @@
-// @ts-check
-
-// Page Object ของ https://testsheepnz.github.io/BasicCalculator.html
-// เก็บ locator และ action ทั้งหมดของหน้า ส่วน assertion อยู่ในไฟล์ test
+// Page Object for the Basic Calculator page: locators and actions only, assertions live in the test.
 class CalculatorPage {
-  /**
-   * @param {import('@playwright/test').Page} page
-   */
   constructor(page) {
     this.page = page;
     this.buildSelect = page.getByTestId('selectBuild');
@@ -19,22 +13,13 @@ class CalculatorPage {
     this.errorMessage = page.getByTestId('errorMsgField');
   }
 
-  /**
-   * เปิดหน้าเว็บแล้วเลือก build
-   * @param {string} build "Prototype" หรือ "1".."9"
-   */
+  // Opens the page and picks a build ("Prototype" or "1" to "9").
   async open(build) {
     await this.page.goto('/BasicCalculator.html');
     await this.buildSelect.selectOption({ label: build });
   }
 
-  /**
-   * กรอกตัวเลข เลือก operation ติ๊ก Integers only (ถ้าต้องการ) แล้วกด Calculate
-   * @param {string} operation
-   * @param {string} first
-   * @param {string} second
-   * @param {boolean} integersOnly
-   */
+  // Fills both numbers, picks the operation, ticks Integers only if asked, then clicks Calculate.
   async calculate(operation, first, second, integersOnly) {
     await this.firstNumber.fill(first);
     await this.secondNumber.fill(second);
